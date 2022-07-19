@@ -63,7 +63,7 @@ If any names are confusing and you have suggestions for improvement, feel free t
 
 ## Blank Splits Files
 
-Visit the [RE3 SRC resource page](https://www.speedrun.com/re3/resources) to download template split files. This will be the upload by me (deserteagle417). It includes the usual "Fin" any% splits, a version
+Visit the [RE3 SRC resource page](https://www.speedrun.com/re3/resources) to download template split files. This will be the upload by me (deserteagle417). It includes the usual "Fin" any% splits and versions of Nemesis% and any% Knife Only splits built like the "Fin" any% splits.
 
 ## Credits
 * Everyone who worked on the original scripts and found the original pointers. This includes, probably not exhaustively, Dchaps and Gemini.
