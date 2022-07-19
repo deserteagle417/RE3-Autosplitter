@@ -9,6 +9,7 @@ To use this autosplitter, in LiveSplit enter the name of the game as one of the 
 * RE3: Nemesis
 * Resident Evil 3 1999
 * Resident Evil 3 (1999)
+* RE3
 * RE3 1999
 * RE3 (1999)
 
