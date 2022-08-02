@@ -415,6 +415,7 @@ init
     vars.CHN = 0;
     vars.REB = 0;
     vars.CTJ = 0;
+    vars.endSplitFlag = 0;
 
     //Determine Version
     switch (modules.First().ModuleMemorySize)
@@ -637,6 +638,7 @@ update
 		vars.doorIterator = 0;
         vars.thousandDoor = 0;
         vars.CTJ = 0;
+        vars.endSplitFlag = 0;
 	}
 
     //Iterate through the inventory slots to return their values
@@ -663,17 +665,24 @@ start
 
 split
 {
+    //Ending Split -- Always Active
+    if(current.roomID == 14 && current.oldRoom == 15 && current.camID == 2 && vars.endSplitFlag == 0 && ((current.gameState & 0x4000) == 0x4000))
+    {
+        Thread.Sleep(500);
+        vars.endSplitFlag++;
+        return true;
+    }
+    
     //Create variables to check for the variables in each item slot
     byte[] currentInventoryJill = (vars.InventoryJill as byte[]);
     byte[] currentInventoryCarlos = (vars.InventoryCarlos as byte[]);
 
 	//Item Splits
-	//Double loop through the amount of settings and the amount of slots in our inventory
 	if(settings["item"] || settings["extra"])
     {
 		if(current.character != 8) //Jill occupies character 0 (8 inventory slots) and 1 (10 inventory slots). Carlos is character 8.
         {
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 10; i++) //Iterate through Jill's inventory
             {
 		    	//Check if any of Jill's inventory slots include the variables in our items lists, check if the split was already completed and if the setting for the given item is activated
 		    	if((vars.KeyItems.Contains(currentInventoryJill[i]) || vars.ExtraItems.Contains(currentInventoryJill[i])) && !vars.completedSplits.Contains(currentInventoryJill[i]) && settings[currentInventoryJill[i].ToString()])
@@ -684,7 +693,7 @@ split
 
     	    }
         } else {
-            for(int i = 0; i < 8; i++)
+            for(int i = 0; i < 8; i++) //Iterate through Carlos' inventory
             {
 		    	//Check if any of Carlos' inventory slots include the variables in our items lists, check if the split was already completed and if the setting for the given item is activated
 		    	if((vars.KeyItems.Contains(currentInventoryCarlos[i]) || vars.ExtraItems.Contains(currentInventoryCarlos[i])) && !vars.completedSplits.Contains(currentInventoryCarlos[i]) && settings[currentInventoryCarlos[i].ToString()])
