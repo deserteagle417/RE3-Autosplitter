@@ -642,12 +642,13 @@ start
 split
 {
     //Ending Split -- Always Active
+    /*
     if(current.roomID == 14 && current.oldRoom == 15 && current.camID == 2 && vars.endSplitFlag == 0 && ((current.gameState & 0x4000) == 0x4000))
     {
         Thread.Sleep(500);
         vars.endSplitFlag++;
         return true;
-    }
+    }*/
     
     //Create variables to check for the variables in each item slot
     byte[] currentInventoryJill = (vars.InventoryJill as byte[]);
