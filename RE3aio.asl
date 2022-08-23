@@ -43,8 +43,8 @@ state("bio3_PC", "Mediakite")
 state("BIOHAZARD(R) 3 PC", "REbirth")
 {
 	uint hp        : 0x6620E0;
-	uint save      : 0x667378;
-	uint total     : 0x661D64;
+    uint save      : 0x661D64;
+	uint total     : 0x667378;
 	uint current   : 0x6449D4;
 	uint gameState : 0x661CA0;
     byte stageID   : 0x6673C6;
@@ -410,12 +410,12 @@ init
 	vars.InventoryJill = new byte[10];
 	vars.InventoryCarlos = new byte[8];
 	vars.doorIterator = 0;
-    vars.thousandDoor = 0;
+    vars.thousandDoor = 0; //used for custom door splits
     vars.JPN = 0;
     vars.CHN = 0;
-    vars.REB = 0;
-    vars.CTJ = 0;
-    vars.endSplitFlag = 0;
+    vars.REB = 0; //version detection variables
+    vars.runFrames = 0; //holds the value of "current". Needed since the version detection method doesn't distinguish TWN and CHN versions
+    vars.endSplitFlag = 0; //used as a flag to prevent endsplit from triggering more than once
 
     //Determine Version
     switch (modules.First().ModuleMemorySize)
@@ -613,7 +613,7 @@ update
 		vars.completedSplits.Clear();
 		vars.doorIterator = 0;
         vars.thousandDoor = 0;
-        vars.CTJ = 0;
+        vars.runFrames = 0;
         vars.endSplitFlag = 0;
 	}
 
@@ -642,13 +642,11 @@ start
 split
 {
     //Ending Split -- Always Active
-    /*
-    if(current.roomID == 14 && current.oldRoom == 15 && current.camID == 2 && vars.endSplitFlag == 0 && ((current.gameState & 0x4000) == 0x4000))
+    if(current.roomID == 14 && current.oldRoom == 15 && current.camID == 2 && vars.endSplitFlag == 0 && ((current.gameState & 0x4000) == 0x4000) && current.total != old.total)
     {
-        Thread.Sleep(500);
         vars.endSplitFlag++;
         return true;
-    }*/
+    }
     
     //Create variables to check for the variables in each item slot
     byte[] currentInventoryJill = (vars.InventoryJill as byte[]);
@@ -813,31 +811,27 @@ split
 
 gameTime
 {
-	if(vars.CHN == 1 || vars.JPN == 1)
+    /*Since ModuleMemorySize cannot distinguish CHN from TWN, if we're using one of those two, check whether the value of 
+    current stays 0. If it does, this indicates it's the Taiwanese version.*/
+    if(vars.CHN == 1 && current.current == 0)
     {
-        //If current stays 0, that indicates CHN version, otherwise it's TWN or JPN version
-        if(current.current == 0)
-        {
-            vars.CTJ = new DeepPointer(0x13705C, 0x5ac).Deref<uint>(game);
-        } else {
-            vars.CTJ = current.current;
-        }
-        
-        if((current.gameState & 0x4000) == 0x4000) 
-	    {
-	    	return TimeSpan.FromSeconds((current.total) / 60.0);
-	    } else {
-	    	return TimeSpan.FromSeconds((vars.CTJ - current.save + current.total) / 60.0);
-	    }
-    } else if(vars.REB == 1)
-    {
-        if((current.gameState & 0x4000) == 0x4000) 
-        {
-	    	return TimeSpan.FromSeconds((current.save) / 60.0);
-	    } else {
-	    	return TimeSpan.FromSeconds((current.save - current.total + current.current) / 60.0);
-	    }
+        vars.runFrames = new DeepPointer(0x13705C, 0x5ac).Deref<uint>(game); //this is what the value of current should be in TWN version
+    } else {
+        vars.runFrames = current.current;
     }
+
+    /*
+    The game has a constantly running frame counter from when it is booted up. This is the value of vars.runFrames.
+    When a new game is started or a save is loaded, a snapshot of the current runFrames value is stored in current.save.
+    For a new game, the value of current.total is set to 0. For a loaded save, it is set to the IGT at the time of the save.
+    When the game ends, the value of current.total is set to the ending IGT.
+    */ 
+    if((current.gameState & 0x4000) == 0x4000) 
+	{
+		return TimeSpan.FromSeconds((current.total) / 60.0);
+	} else {
+		return TimeSpan.FromSeconds((vars.runFrames - current.save + current.total) / 60.0);
+	}
 }
 
 isLoading
