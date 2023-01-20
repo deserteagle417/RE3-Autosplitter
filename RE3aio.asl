@@ -220,7 +220,7 @@ startup
         settings.Add("1077", true, "Construction Site");
         settings.Add("1078", true, "Power Station Outside");
         settings.Add("1079", true, "Power Station Access");
-        settings.Add("1080", true, "Power Station ");
+        settings.Add("1080", true, "Power Station");
         settings.Add("1081", true, "Power Station Outside");
         settings.Add("1082", true, "Construction Site");
         settings.Add("1083", true, "Parking Lot Back");
@@ -434,7 +434,7 @@ init
 			break;
 	};
 
-    //Door Splits Master List
+    //Door Splits Master List -- these are arranged as (doorIterator, oldRoom, roomID)
     vars.masterDoors = new List<Tuple<int, int, int>>
     {
         Tuple.Create(  0, 13,  1), Tuple.Create(  1,  1,  0), Tuple.Create(  2,  0,  1), Tuple.Create(  3,  1,  2), Tuple.Create(  4,  2,  3), Tuple.Create(  5,  3,  4), Tuple.Create(  6,  4,  3), Tuple.Create(  7,  3,  4), Tuple.Create(  8,  4,  6), Tuple.Create(  9,  6,  5),
@@ -461,10 +461,11 @@ init
         Tuple.Create(210, 21, 16), Tuple.Create(211, 16, 13), Tuple.Create(212, 13, 12), Tuple.Create(213, 12, 14), Tuple.Create(214, 14, 15), Tuple.Create(215, 15, 16), Tuple.Create(216, 16,  0), Tuple.Create(217,  0,  1), Tuple.Create(218,  1,  2), Tuple.Create(219,  2,  1),
         Tuple.Create(220,  1,  0), Tuple.Create(221,  0,  3), Tuple.Create(222,  3,  0), Tuple.Create(223,  0,  3), Tuple.Create(224,  3,  3), Tuple.Create(225,  3,  7), Tuple.Create(226,  7,  4), Tuple.Create(227,  4,  5), Tuple.Create(228,  5,  6), Tuple.Create(229,  6,  5),
         Tuple.Create(230,  5,  4), Tuple.Create(231,  4,  7), Tuple.Create(232,  7,  3), Tuple.Create(233,  3,  3), Tuple.Create(234,  3,  8), Tuple.Create(235,  8,  9), Tuple.Create(236,  9,  8), Tuple.Create(237,  8,  3), Tuple.Create(238,  3,  0), Tuple.Create(239,  0, 10),
-        Tuple.Create(240, 10, 11), Tuple.Create(241, 11, 12), Tuple.Create(242, 12, 13), Tuple.Create(243, 13, 15), Tuple.Create(244, 15, 14)
+        Tuple.Create(240, 10, 11), Tuple.Create(241, 11, 12), Tuple.Create(242, 12, 13), Tuple.Create(243, 13, 15), Tuple.Create(244, 15, 14),
+        Tuple.Create( 80, 19,  4) //extra index 80 split to account for leaving power station after shocking zombies
     };
 
-    //any% Splits
+    //any% Splits -- the numbers indicate the indices from the master door list to split on.
     vars.anyDoors = new List<int>()
 	{  0,   1,   2,   3,   4,   5,             8,   9,
       10,  11,  12,  13,            16,  17,  18,  19,
