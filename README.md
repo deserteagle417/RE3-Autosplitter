@@ -13,7 +13,11 @@ To use this autosplitter, in LiveSplit enter the name of the game as one of the 
 * RE3 1999
 * RE3 (1999)
 
-If using the REbirth version, your .exe must be named "BIOHAZARD(R) 3 PC.exe". All others should be named "bio3_PC.exe". If you are running the REbirth patch, please make sure that you have the version used on the leaderboard. The current patch will not work with the autosplitter and will give a nonsense time readout. (It is intentionally unsupported as it is not allowed on the leaderboard.)
+##.exe File Name
+If using the REbirth version, your .exe must be named "BIOHAZARD(R) 3 PC.exe". All others should be named "bio3_PC.exe".
+
+##Special Note for REbirth Patch Users
+If you are running the REbirth patch, please make sure that you have the version used on the leaderboard. The current patch will not work with the autosplitter and will give a nonsense time readout. (It is intentionally unsupported as it is not allowed on the leaderboard.)
 
 ## Door Splits
 
